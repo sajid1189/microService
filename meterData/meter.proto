@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package meter;
+
+service MeterService {
+    rpc GetReadings (ReadingRequest) returns (ReadingResponse);
+    rpc CreateReadings (ReadingRequest) returns (ReadingCreateResponse);
+}
+
+message ReadingRequest {
+    string start_date = 1;
+    string end_date = 2;
+    int32 meter_id = 3;
+}
+
+message Reading {
+    int32 value = 1;
+    string created_at = 2;
+    string source = 3;
+}
+
+message ReadingResponse {
+    repeated Reading readings = 1;
+}
+
+message ReadingCreateResponse {
+    int64 id = 1;
+}
