@@ -4,7 +4,7 @@ import json
 
 
 def notify_data_creation(message: str):
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
     channel = connection.channel()
 
     channel.queue_declare(queue='data_notification', durable=True)

@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672" # RabbitMQ Management UI
+
+  api-gateway:
+    build:
+      context: ./api_gateway
+      dockerfile: Dockerfile
+    environment:
+#      DATABASE_HOST: postgres
+#      DATABASE_NAME: your_database_name
+#      DATABASE_USER: your_database_user
+#      DATABASE_PASSWORD: your_database_password
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+    ports:
+      - "8000:8000"
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+
+  grpc-service:
+    build:
+      context: ./meterData
+      dockerfile: Dockerfile
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+
+    ports:
+      - "50051:50051"
+
+  notification-service:
+    build:
+      context: ./notification
+      dockerfile: Dockerfile
+    environment:
+#      DATABASE_HOST: postgres
+#      DATABASE_NAME: your_database_name
+#      DATABASE_USER: your_database_user
+#      DATABASE_PASSWORD: your_database_password
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+      - redis
+    ports:
+      - "8001:8001"
+
+  notification-listener:
+    build:
+      context: ./notification
+      dockerfile: Dockerfile.listen
+    environment:
+#      DATABASE_HOST: postgres
+#      DATABASE_NAME: your_database_name
+#      DATABASE_USER: your_database_user
+#      DATABASE_PASSWORD: your_database_password
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - rabbitmq
+      - redis
+    ports:
+      - "8002:8002"

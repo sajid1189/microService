@@ -21,10 +21,9 @@ def send(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         channel = connection.channel()
 
         channel.queue_declare(queue='data_notification', durable=True)

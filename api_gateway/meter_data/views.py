@@ -21,7 +21,7 @@ from meter_data.grpc_clients import meter_pb2, meter_pb2_grpc
 class MeterReadingsViewSet(APIView):
     """Endpoint for meter readings."""
 
-    grpc_address = "localhost:50051"
+    grpc_address = "grpc-service:50051"
 
     def get(self, request):
         # Extract parameters from the request
