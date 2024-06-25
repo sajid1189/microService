@@ -3,7 +3,7 @@ import pika
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.core.management import BaseCommand
-
+import time
 logger = logging.getLogger(__name__)
 
 
@@ -23,6 +23,7 @@ def send(ch, method, properties, body):
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
+        time.sleep(30) # wait for the rabbit MQ to start be ready
         connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         channel = connection.channel()
 
