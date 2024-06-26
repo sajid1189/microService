@@ -16,3 +16,8 @@ class MeterReadingSerializer(serializers.ModelSerializer):
             "source",
             "reading_reason",
         )
+
+    def validate_source(self, source):
+        if source != ReadingTypeChoices.MANUALLY:
+            raise serializers.ValidationError(f"source is not manual. {source} types are not allowed to create.")
+        return source
