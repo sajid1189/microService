@@ -4,13 +4,22 @@ package meter;
 
 service MeterService {
     rpc GetReadings (ReadingRequest) returns (ReadingResponse);
-    rpc CreateReadings (ReadingRequest) returns (ReadingCreateResponse);
+    rpc CreateReadings (MeterDataPayload) returns (ReadingCreateResponse);
 }
 
 message ReadingRequest {
     string start_date = 1;
     string end_date = 2;
     int32 meter_id = 3;
+}
+
+message MeterDataPayload {
+    string meter_serial = 1;
+    string timestamp = 2;
+    int32 channel = 3;
+    float value = 4;
+    string source = 5;
+    string reading_reason = 6;
 }
 
 message Reading {

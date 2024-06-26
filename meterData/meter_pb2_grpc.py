@@ -46,7 +46,7 @@ class MeterServiceStub(object):
                 _registered_method=True)
         self.CreateReadings = channel.unary_unary(
                 '/meter.MeterService/CreateReadings',
-                request_serializer=meter__pb2.ReadingRequest.SerializeToString,
+                request_serializer=meter__pb2.MeterDataPayload.SerializeToString,
                 response_deserializer=meter__pb2.ReadingCreateResponse.FromString,
                 _registered_method=True)
 
@@ -76,7 +76,7 @@ def add_MeterServiceServicer_to_server(servicer, server):
             ),
             'CreateReadings': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateReadings,
-                    request_deserializer=meter__pb2.ReadingRequest.FromString,
+                    request_deserializer=meter__pb2.MeterDataPayload.FromString,
                     response_serializer=meter__pb2.ReadingCreateResponse.SerializeToString,
             ),
     }
@@ -132,7 +132,7 @@ class MeterService(object):
             request,
             target,
             '/meter.MeterService/CreateReadings',
-            meter__pb2.ReadingRequest.SerializeToString,
+            meter__pb2.MeterDataPayload.SerializeToString,
             meter__pb2.ReadingCreateResponse.FromString,
             options,
             channel_credentials,
