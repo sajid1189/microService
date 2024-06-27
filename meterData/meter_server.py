@@ -66,6 +66,7 @@ class MeterServiceServicer(meter_pb2_grpc.MeterServiceServicer):
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, f"invalid request payload: {serializer.errors}")
 
         if instance:
+            notify_data_creation("created")
             return meter_pb2.ReadingCreateResponse(id=instance.id if instance else -1)
 
 def serve():
